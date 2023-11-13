@@ -13,7 +13,6 @@ var inputPhone = document.getElementById("numberphone")
 var inputPhoneError = document.getElementById("phoneError");
 var inputFile = document.getElementById("inputFile");
 var outputImagePreview = document.getElementById("outputImagePreview");
-/* var continueUrl = document.querySelector("continue-url"); */
 var buttonContinue = document.querySelector(".continue");
 
 
@@ -96,3 +95,33 @@ inputFile.addEventListener('change', function(){
   globalThis.a = "file:///C:/Users/faers/Desktop/HomemeetReg/src/index2.html"
 })
 
+function postData() {
+  const formData = new FormData(document.getElementById("myform"));
+
+  fetch('/user_data/', {
+    method: 'POST',
+    body: formData
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        alert('Данные вернны!');
+        document.getElementById("myform").reset();
+        window.location.href = '/myapp/study';
+      })
+      .catch(error => {
+        alert('Ошибка повторите!');
+        if (response.status === 400) {
+          for (const field in data.errors) {
+            const errorField = document.getElementById(`${field}Error`);
+            errorField.textContent = data.errors[field];
+          }
+        }
+        console.error('Error:', error);
+      });
+}
